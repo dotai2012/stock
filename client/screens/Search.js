@@ -1,40 +1,59 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect, memo } from 'react';
+import { FlatList } from 'react-native';
 import _ from 'lodash';
+import { ListItem } from 'react-native-elements';
+
 import { getItem, setItem } from '../services/storage';
 
 const Search = ({ route: { params: { term } } }) => {
-  const [symbols, setSymbols] = useState([]);
-  console.log(term);
+  const [stocks, setStocks] = useState([]);
 
-  // useEffect(() => () => {
-  //   const fetchSymbols = async () => {
-  //     try {
-  //       const symbolsStorage = await getItem('symbols');
-  //       let symbolsData = [];
+  useEffect(() => () => {
+    const fetchStocks = async () => {
+      try {
+        const stocksStorage = await getItem('stocks');
+        let stocksData = [];
 
-  //       if (!symbolsStorage) {
-  //         const data = await (await fetch('https://finnhub.io/api/v1/stock/symbol?exchange=US&token=bpltuifrh5rdbt8o5fpg')).json();
-  //         symbolsData = _.uniqBy(data.map(({ description, symbol }) => ({ id: symbol, name: `${symbol} - ${description}` })), 'id');
-  //         await setItem('symbols', symbolsData, 86400);
-  //       } else {
-  //         symbolsData = symbolsStorage;
-  //       }
+        if (!stocksStorage) {
+          const data = await (await fetch('https://finnhub.io/api/v1/stock/symbol?exchange=US&token=bpltuifrh5rdbt8o5fpg')).json();
+          stocksData = _.uniqBy(data.map(({ description, symbol }) => ({ id: symbol, name: `${symbol} - ${description}` })), 'id');
+          await setItem('stocks', stocksData, 86400);
+        } else {
+          stocksData = stocksStorage;
+        }
 
-  //       setSymbols(symbolsData);
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //   };
+        setStocks(stocksData);
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
-  //   fetchSymbols();
-  // }, []);
+    fetchStocks();
+  }, []);
+
+  const filterStocks = () => {
+    const regex = new RegExp(`${term.trim()}`, 'i');
+    return stocks.filter(({ name }) => name.search(regex) >= 0);
+  };
+
+  const renderItems = ({ item: { name } }) => {
+    console.log(name);
+    return (
+      <ListItem
+        title={name}
+        bottomDivider
+        chevron
+      />
+    );
+  };
 
   return (
-    <View>
-      <Text>This is Search page</Text>
-    </View>
+    <FlatList
+      data={filterStocks()}
+      renderItem={renderItems}
+      keyExtractor={(item) => item.id}
+    />
   );
 };
 
-export default Search;
+export default memo(Search);

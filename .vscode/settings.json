@@ -83,6 +83,19 @@
     "client/node_modules/hammerjs/**/node_modules": true,
     "client/node_modules/hammerjs/**/.DS_Store": true,
     "client/node_modules/hammerjs/**/testdist": true,
-    "client/node_modules/hammerjs/**/dist": true
+    "client/node_modules/hammerjs/**/dist": true,
+    "client/node_modules/**/*": true,
+    "client/.expo/*": true,
+    "client/**/npm-debug.*": true,
+    "client/**/*.jks": true,
+    "client/**/*.p8": true,
+    "client/**/*.p12": true,
+    "client/**/*.key": true,
+    "client/**/*.mobileprovision": true,
+    "client/**/*.orig.*": true,
+    "client/**/yarn.lock": true,
+    "client/**/web-build/": true,
+    "client/**/web-report/": true,
+    "client/**/.DS_Store": true
   }
 }
