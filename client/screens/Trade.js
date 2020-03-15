@@ -20,7 +20,6 @@ const Trade = () => {
 
   return (
     <View style={styles.container}>
-      <Header />
       <TradingView symbol="BINANCE:ETHBTC" />
       <Order title="Buy stock" side="buy" onSubmit={onTrade} value={amountBuy} onChange={setAmountBuy} />
       <Order title="Sell stock" side="sell" onSubmit={onTrade} value={amountSell} onChange={setAmountSell} />
