@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import Header from '../components/Header';
 import TradingView from '../components/TradingView';
 import Order from '../components/Order';
 
