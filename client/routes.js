@@ -6,7 +6,6 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 
-import Header from './components/Header';
 import Home from './screens/Home';
 import Trade from './screens/Trade';
 import About from './screens/About';
@@ -28,10 +27,6 @@ function DrawerContent(props) {
 function RouteApp() {
   return (
     <Drawer.Navigator
-      screenOptions={{
-        headerStyle: { height: 80 },
-        header: ({ scene }) => <Header style={scene.descriptor.options.headerStyle} />,
-      }}
       drawerContent={(props) => DrawerContent(props)}
     >
       <Drawer.Screen name="Home" component={Home} />

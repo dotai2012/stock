@@ -1,19 +1,20 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 const styles = StyleSheet.create({
   container: {
-    maxHeight: 250,
+    maxHeight: 350,
+    flex: 1,
   },
 });
 
 const TradingView = ({ symbol }) => (
-  <WebView
-    style={styles.container}
-    originWhitelist={['*']}
-    source={{
-      html: `<div class="tradingview-widget-container">
+  <View style={styles.container}>
+    <WebView
+      originWhitelist={['*']}
+      source={{
+        html: `<div class="tradingview-widget-container">
       <div id="tradingview_541d1"></div>
       <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
       <script type="text/javascript">
@@ -34,8 +35,9 @@ const TradingView = ({ symbol }) => (
       );
       </script>
       </div>`,
-    }}
-  />
+      }}
+    />
+  </View>
 );
 
 export default TradingView;
