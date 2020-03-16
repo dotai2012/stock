@@ -18,7 +18,11 @@ const FormInput = ({
   label, value, onChange, type = 'default',
 }) => (
   <View>
-    <Text h3>{label}</Text>
+    <Text h5>
+      {label}
+      :
+      {' '}
+    </Text>
     <Input
       placeholder={label}
       onChangeText={onChange}

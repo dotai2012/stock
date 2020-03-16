@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview';
 
 const styles = StyleSheet.create({
   container: {
-    maxHeight: 350,
+    height: 350,
     flex: 1,
   },
 });

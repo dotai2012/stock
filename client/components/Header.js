@@ -41,7 +41,7 @@ const Header = () => {
     <View>
       <HeaderBar
         containerStyle={styles.container}
-        leftComponent={{ icon: 'home', color: '#fff' }}
+        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate('Home') }}
         centerComponent={renderSearchBar()}
         rightComponent={{ icon: 'menu', color: '#fff', onPress: toggleDrawer }}
       />
