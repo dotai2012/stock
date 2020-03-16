@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import {
+  ScrollView, View, StyleSheet, KeyboardAvoidingView,
+} from 'react-native';
 import { Card, Text } from 'react-native-elements';
 
 import TradingView from '../components/TradingView';
@@ -8,7 +10,6 @@ import Order from '../components/Order';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
   },
   quoteContainer: {
     flexDirection: 'row',
@@ -50,19 +51,21 @@ const Trade = (props) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <TradingView symbol={symbol} />
-      <Card title={symbol} titleStyle={styles.quoteTitle}>
-        <View style={styles.quoteContainer}>
-          <Text>{`HIGH: ${quote.h || 0}`}</Text>
-          <Text>{`OPEN: ${quote.o || 0}`}</Text>
-          <Text>{`CLOSE: ${quote.c || 0}`}</Text>
-          <Text>{`LOW: ${quote.l || 0}`}</Text>
-        </View>
-      </Card>
-      <Order title="Buy stock" side="buy" onSubmit={onTrade} value={amountBuy} onChange={setAmountBuy} />
-      <Order title="Sell stock" side="sell" onSubmit={onTrade} value={amountSell} onChange={setAmountSell} />
-    </ScrollView>
+    <KeyboardAvoidingView behavior="padding" style={styles.container} keyboardVerticalOffset={100}>
+      <ScrollView>
+        <TradingView symbol={symbol} />
+        <Card title={symbol} titleStyle={styles.quoteTitle}>
+          <View style={styles.quoteContainer}>
+            <Text>{`HIGH: ${quote.h || 0}`}</Text>
+            <Text>{`OPEN: ${quote.o || 0}`}</Text>
+            <Text>{`CLOSE: ${quote.c || 0}`}</Text>
+            <Text>{`LOW: ${quote.l || 0}`}</Text>
+          </View>
+        </Card>
+        <Order title="Buy stock" side="buy" onSubmit={onTrade} value={amountBuy} onChange={setAmountBuy} />
+        <Order title="Sell stock" side="sell" onSubmit={onTrade} value={amountSell} onChange={setAmountSell} />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
