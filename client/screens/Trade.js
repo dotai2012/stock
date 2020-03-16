@@ -12,11 +12,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   quoteContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   quoteTitle: {
     fontSize: 20,
+  },
+  quoteItem: {
+    fontSize: 18,
   },
 });
 
