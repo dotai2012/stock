@@ -4,11 +4,6 @@ import { Button, Card } from 'react-native-elements';
 import FormInput from './FormInput';
 
 const styles = StyleSheet.create({
-  container: {
-    borderWidth: 2,
-    marginTop: 20,
-    padding: 20,
-  },
   title: {
     textAlign: 'center',
     fontSize: 20,
@@ -22,11 +17,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingVertical: 15,
     paddingHorizontal: 25,
-  },
-  buttonText: {
-    fontSize: 16,
-    color: 'white',
-    textTransform: 'uppercase',
   },
 });
 
