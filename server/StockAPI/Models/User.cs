@@ -10,7 +10,7 @@ namespace StockAPI.Models
     public class User
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name  { get; set; }
         public string Email  { get; set; }
         public string Password { get; set; }
@@ -19,9 +19,5 @@ namespace StockAPI.Models
         //Child Tables
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<Trade> Trades { get; set; }
-
-
-
-
     }
 }
