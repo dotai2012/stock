@@ -7,6 +7,7 @@ import {
 } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import Login from './screens/Login';
 import Home from './screens/Home';
 import Trade from './screens/Trade';
 import About from './screens/About';
@@ -31,6 +32,7 @@ const Root = () => (
   <Drawer.Navigator
     drawerContent={(props) => DrawerContent(props)}
   >
+    <Drawer.Screen name="Login" component={Login} />
     <Drawer.Screen name="Home" component={Home} />
     <Drawer.Screen name="Trade" component={Trade} />
     <Drawer.Screen name="About" component={About} />
