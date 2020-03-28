@@ -23,17 +23,13 @@ namespace StockAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly StockContext _context;
-        private IConfiguration _config;
 
-        public UserController(StockContext context, IConfiguration config)
+        public UserController(StockContext context)
         {
             _context = context;
-            _config = config; 
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
-         Roles = "Admin,Manager")]
         public IEnumerable<User> GetAll()
         {
             return _context.Users.ToList();
@@ -45,7 +41,7 @@ namespace StockAPI.Controllers
         [HttpGet("{id}", Name = "GetUser")]
         public IActionResult GetById(long id)
         {
-            var item = _context.Users.FirstOrDefault(t => t.Id == id.ToString());
+            var item = _context.Users.FirstOrDefault(t => t.Id == id);
             if (item == null)
             {
                 return NotFound();
@@ -54,15 +50,15 @@ namespace StockAPI.Controllers
         }
 
         [HttpPost]
-        public JObject Create([FromBody]User user)
+        public IActionResult Create([FromBody]User user)
         {
-            dynamic jsonResponse = new JObject();
-
-      
-            var tokenString = GenerateJSONWebToken(user);
-            jsonResponse.token = tokenString;
-            jsonResponse.status = "OK";
-            return jsonResponse;
+            if (user.Name == "" || user.Name == null)
+            {
+                return BadRequest();
+            }
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return new ObjectResult(user);
         }
 
         [HttpPut]
@@ -88,7 +84,7 @@ namespace StockAPI.Controllers
         [Route("MyDelete")] // Custom route
         public IActionResult MyDelete(long Id)
         {
-            var item = _context.Users.Where(t => t.Id == Id.ToString()).FirstOrDefault();
+            var item = _context.Users.Where(t => t.Id == Id).FirstOrDefault();
             if (item == null)
             {
                 return NotFound();
@@ -98,18 +94,5 @@ namespace StockAPI.Controllers
             return new ObjectResult(item);
         }
 
-        string GenerateJSONWebToken(User user)
-        {
-            var securityKey
-                = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials
-                = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-      
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Issuer"],
-                expires: DateTime.Now.AddMinutes(120),
-                signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
     }
 }
