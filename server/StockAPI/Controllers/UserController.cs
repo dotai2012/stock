@@ -23,10 +23,12 @@ namespace StockAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly StockContext _context;
+        private IConfiguration _config;
 
-        public UserController(StockContext context)
+        public UserController(StockContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         [HttpGet]
@@ -50,22 +52,29 @@ namespace StockAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]User user)
+        public dynamic Create([FromBody]User user)
         {
+            dynamic jsonResponse = new JObject();
+
             if (user.Name == "" || user.Name == null)
             {
                 return BadRequest();
             }
+
             _context.Users.Add(user);
             _context.SaveChanges();
-            return new ObjectResult(user);
+            new ObjectResult(user);
+            var tokenString = GenerateJSONWebToken(user);
+            jsonResponse.token = tokenString;
+            jsonResponse.status = "OK";
+            return jsonResponse;
         }
 
         [HttpPut]
         [Route("MyEdit")] // Custom route
         public IActionResult GetByParams([FromBody]User user)
         {
-            var item = _context.Users.Where(t => t.Id == user.Id).FirstOrDefault();
+            var item = _context.Users.Where(t => t.Name == user.Name).FirstOrDefault();
             if (item == null)
             {
                 return NotFound();
@@ -94,5 +103,19 @@ namespace StockAPI.Controllers
             return new ObjectResult(item);
         }
 
+        string GenerateJSONWebToken(User user)
+        {
+            var securityKey
+                = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials
+                = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+                _config["Jwt:Issuer"],
+                expires: DateTime.Now.AddMinutes(120),
+                signingCredentials: credentials);
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
-}
+
+    }
