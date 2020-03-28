@@ -1,32 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
-class Login extends React.Component {
-  state={
-    email:"",
-    password:"",
-    message:"Login",
-    toggle:true
-  }
+const BASEURL = "https://localhost:44388/api/values"
 
- handleSubmit = () => {
-    alert(this.state.email)
-  }
+const Login = (props) => {
+  const  [email, setEmail] = useState("")
+  const  [password, setPassword] = useState("")
+  const  [message, setMessage] = useState("Login")
+  const  [toggle, setToggle] = useState(true)
+
+ handleSubmit = (e) => {
+   e.preventDefault();
+  console.log("test")
+   console.log(email, password)
+
+//    const controller = new AbortController();
+
+//    const fetchStocks = async () => {
+//      try {
+//          const data = await (await fetch(BASEURL, {
+//           method: 'GET',
+//           headers: {
+//               'Accept': 'application/json',
+//               'Content-type': 'application/json'
+//           }})).json();
+//          await console.log(data)
+//      } catch (e) {
+//        console.error(e);
+//      }
+//    };
+
+//    fetchStocks();
+
+//    return () => controller.abort();
+// }
+ }
 
   handleSignUp = () => {
-    this.setState({message:"Register", toggle:false})
+    setMessage("Register")  
+    setToggle(false)
   }
 
-  render(){
     return (
       <View style={styles.container}>
-        <Text style={styles.logo}>{this.state.message}</Text>
+        <Text style={styles.logo}>{message}</Text>
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
             placeholder="Email..." 
             placeholderTextColor="#003f5c"
-            onChangeText={text => this.setState({email:text})}/>
+            onChangeText={text => setEmail(text)}/>
         </View>
         <View style={styles.inputView} >
           <TextInput  
@@ -34,18 +57,17 @@ class Login extends React.Component {
             style={styles.inputText}
             placeholder="Password..." 
             placeholderTextColor="#003f5c"
-            onChangeText={text => this.setState({password:text})}/>
+            onChangeText={text => setPassword(text)}/>
         </View>
         <TouchableOpacity style={styles.loginBtn} onPress={this.handleSubmit}>
-          <Text style={styles.loginText}>{this.state.message}</Text>
+          <Text style={styles.loginText}>{message}</Text>
         </TouchableOpacity>  
 
-        {this.state.toggle ?   <TouchableOpacity onPress={this.handleSignUp}>
+        {toggle ?   <TouchableOpacity onPress={this.handleSignUp}>
           <Text style={styles.loginText}>Signup</Text>
         </TouchableOpacity> : <Text></Text>}
       </View>
     );
-  }
 }
 
 const styles = StyleSheet.create({
