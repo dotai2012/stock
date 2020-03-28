@@ -16,18 +16,19 @@ const Login = (props) => {
     const controller = new AbortController();
 
    const requestLogin = async () => {
-      try {
-          const data = await (await fetch(BASEURL, {
-                       method: 'GET',
-           headers: {
-               'Accept': 'application/json',
-               'Content-type': 'application/json'
-           }})).json();
-          await console.log(data)
-      } catch (e) {
-        console.error(e);
-      }
-    };
+    fetch(BASEURL, {
+      method: 'GET',
+      headers: {
+                   'Accept': 'application/json',
+                      'Content-type': 'application/json',
+                     'Access-Control-Allow-Headers': '*'
+                  },
+      body:JSON.stringify({Name:"testfromClient", Email:"test1234@gmail.com", Password: "1234Test"})
+  }).then((res) => res.json())
+  .then((data) =>  console.log(data))
+  .catch((err)=>console.log(err))
+    }  
+ };
 
     requestLogin();
 
