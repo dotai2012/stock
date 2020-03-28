@@ -6,6 +6,7 @@ import { Card, Text } from 'react-native-elements';
 
 import TradingView from '../components/TradingView';
 import Order from '../components/Order';
+import { navigate } from '../services/navigation';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,11 +45,23 @@ const Trade = (props) => {
     return () => controller.abort();
   }, [symbol]);
 
-  const onTrade = (side) => {
-    if (side === 'buy') {
-      console.log('Bought, redirect to home page');
-    } else {
-      console.log('Sold, redirect to home page');
+  const onTrade = async (type) => {
+    try {
+      // TODO: fix relative url and userID
+      await fetch('/api/trade', {
+        method: 'POST',
+        body: JSON.stringify({
+          type,
+          symbol,
+          price: quote.c,
+          quantity: amountBuy,
+          userId: 1,
+        }),
+      });
+
+      navigate('Home');
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -64,8 +77,8 @@ const Trade = (props) => {
             <Text>{`LOW: ${quote.l || 0}`}</Text>
           </View>
         </Card>
-        <Order title="Buy stock" side="buy" onSubmit={onTrade} value={amountBuy} onChange={setAmountBuy} />
-        <Order title="Sell stock" side="sell" onSubmit={onTrade} value={amountSell} onChange={setAmountSell} />
+        <Order title="Buy stock" type="buy" onSubmit={onTrade} value={amountBuy} onChange={setAmountBuy} />
+        <Order title="Sell stock" type="sell" onSubmit={onTrade} value={amountSell} onChange={setAmountSell} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
