@@ -11,30 +11,28 @@ const Login = (props) => {
 
  handleSubmit = (e) => {
    e.preventDefault();
-  console.log("test")
    console.log(email, password)
 
-//    const controller = new AbortController();
+    const controller = new AbortController();
 
-//    const fetchStocks = async () => {
-//      try {
-//          const data = await (await fetch(BASEURL, {
-//           method: 'GET',
-//           headers: {
-//               'Accept': 'application/json',
-//               'Content-type': 'application/json'
-//           }})).json();
-//          await console.log(data)
-//      } catch (e) {
-//        console.error(e);
-//      }
-//    };
+   const requestLogin = async () => {
+      try {
+          const data = await (await fetch(BASEURL, {
+                       method: 'GET',
+           headers: {
+               'Accept': 'application/json',
+               'Content-type': 'application/json'
+           }})).json();
+          await console.log(data)
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
-//    fetchStocks();
+    requestLogin();
 
-//    return () => controller.abort();
-// }
- }
+    return () => controller.abort();
+  }
 
   handleSignUp = () => {
     setMessage("Register")  
