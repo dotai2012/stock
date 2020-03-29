@@ -3,13 +3,13 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 import { AsyncStorage } from 'react-native';
 
 
-const USERBASE = "http://192.168.1.73:19000:5001/api/user"
+// const USERBASE = "http://192.168.1.73:19000:5001/api/user"
 
 // const BASEURL = "http://192.168.1.25:5001/api/values"
 //  const testurl = "https://localhost:5001/api/values"
 
 // const test = "https://192.168.1.73:5001/api/values"
-    const ngrok = "http://a325b80d.ngrok.io/api/values"
+ const ngrok = "http://a325b80d.ngrok.io/api/user"
 //exp://192.168.1.73:19000
 // https://192.168.0.100:5001/api/trade
 
@@ -33,15 +33,20 @@ const Login = (props) => {
     // }
   }
 
-
-
   const fetchAPI = (submitBody) => {
     console.log(submitBody)
     // setCatch({token: "21rwfjawfkay2"})
 
     const fetchAsync = async () => {
       try {
-        const data = await (await fetch(ngrok)).json();
+        const data = await (await fetch(ngrok, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify(submitBody)
+        })).json();
         setCatch(data);
       } catch (e) {
         console.error(e);
