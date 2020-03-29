@@ -39,7 +39,6 @@ namespace StockAPI.Controllers
 
         // For example:
         // http://localhost:<port #>/api/User/1
-
         [HttpGet("{id}", Name = "GetUser")]
         public IActionResult GetById(long id)
         {
@@ -51,42 +50,45 @@ namespace StockAPI.Controllers
             return new ObjectResult(item);
         }
 
+        //register/login handler 
+        //optional login body included here
         [HttpPost]
         public dynamic Create([FromBody]User user)
         {
             dynamic jsonResponse = new JObject();
 
-            if (user.Name == "" || user.Name == null)
+            if (user.Name == "" || user.Name == null) 
             {
                 return BadRequest();
             }
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            new ObjectResult(user);
-            var tokenString = GenerateJSONWebToken(user);
-            jsonResponse.token = tokenString;
-            jsonResponse.status = "OK";
-            return jsonResponse;
-        }
+            //if from the client this key has been set to true, we assume they want to login, and we execute this logic.
+            //if not, we treat this as a new post requst to register (generate) a user.
+            // on the client, this register post request must be set to false as the default...
 
-        [HttpPut]
-        [Route("MyEdit")] // Custom route
-        public IActionResult GetByParams([FromBody]User user)
-        {
-            var item = _context.Users.Where(t => t.Name == user.Name).FirstOrDefault();
-            if (item == null)
+            if (user.Validate == true)
             {
-                return NotFound();
-            }
+                bool testLogin = ValidateLogin(user);
+                if (testLogin == true)
+                 {
+                var tokenString = GenerateJSONWebToken(user);
+                jsonResponse.token = tokenString;
+                jsonResponse.status = "OK";
+                return jsonResponse;
+                } else {
+                    return BadRequest();
+                }
+            } 
             else
             {
-                item.Name = user.Name;
-                item.Password = user.Password;
-                item.Email = user.Email;
+                _context.Users.Add(user);
                 _context.SaveChanges();
+                new ObjectResult(user);
+                var tokenString = GenerateJSONWebToken(user);
+                jsonResponse.token = tokenString;
+                jsonResponse.status = "OK";
+                return jsonResponse;
             }
-            return new ObjectResult(item);
         }
 
         [HttpDelete]
@@ -116,6 +118,18 @@ namespace StockAPI.Controllers
                 signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-    }
 
+        //find if name/password exist in DB context.
+        bool ValidateLogin(User user)
+        {
+           var item = _context.Users.FirstOrDefault(t => t.Name == user.Name && t.Password == user.Password);
+             if (item == null)
+              {
+               return false;
+              }
+
+            return true;
+            }
+
+        }
     }
