@@ -30,17 +30,16 @@ const Login = (props) => {
 
  handleSubmit = (e) => {
    e.preventDefault();
-   console.log(email, password)
    
    const submitObj = {
      Name: name,
-     Email: email,
      Password: password,
      Validate: true
     }
 
     if(toggle == false){
       submitObj.Validate = false
+      submitObj.Email = email
     }
 
   fetchAPI(submitObj)
@@ -54,12 +53,21 @@ const Login = (props) => {
     return (
       <View style={styles.container}>
         <Text style={styles.logo}>{message}</Text>
+
+        {toggle ?  <TextInput></TextInput> :  <View style={styles.inputView} >
+          <TextInput  
+            style={styles.inputText}
+            placeholder="Enter your email..." 
+            placeholderTextColor="#003f5c"
+            onChangeText={text => setEmail(text)}/>
+        </View>}
+
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
-            placeholder="Email..." 
+            placeholder="User Name..." 
             placeholderTextColor="#003f5c"
-            onChangeText={text => setEmail(text)}/>
+            onChangeText={text =>  setName(text) }/>
         </View>
         <View style={styles.inputView} >
           <TextInput  
