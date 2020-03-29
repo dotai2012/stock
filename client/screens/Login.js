@@ -16,11 +16,11 @@ const Login = (props) => {
   const  [toggle, setToggle] = useState(true)
 
 
-  useEffect(() => {
-    if(sessionStorage.getItem("JWT_USER_TOKEN")){
-      alert("You have already logged in!")
-    }
-    })
+  // useEffect(() => {
+  //   if(sessionStorage.getItem("JWT_USER_TOKEN")){
+  //     alert("You have already logged in!")
+  //   }
+    // })
 
   const setCatch = (catchOBj) => { 
     sessionStorage.setItem("JWT_USER_TOKEN", catchOBj.token)
