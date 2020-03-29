@@ -22,7 +22,6 @@ const Home = (props) => {
 
   useEffect(() => {
      retrieveToken()
-     
     })
     
 return( 

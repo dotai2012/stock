@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 
 const USERBASE = "http://192.168.1.73:19000:5001/api/user"
@@ -14,16 +15,15 @@ const Login = (props) => {
   const  [name, setName] = useState("")
   const  [message, setMessage] = useState("Login")
   const  [toggle, setToggle] = useState(true)
+  const [sessionOn, setSessionOn] = useState(false)
 
 
-  // useEffect(() => {
-  //   if(sessionStorage.getItem("JWT_USER_TOKEN")){
-  //     alert("You have already logged in!")
-  //   }
-    // })
-
-  const setCatch = (catchOBj) => { 
-    sessionStorage.setItem("JWT_USER_TOKEN", catchOBj.token)
+  const setCatch = async (catchOBj) => { 
+    try {
+      await AsyncStorage.setItem('JWT_USER_TOKEN', catchOBj.token)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const fetchAPI = (submitBody) => {
