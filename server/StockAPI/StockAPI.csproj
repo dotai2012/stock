@@ -8,6 +8,12 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200327045036_UserSchemaUpdate.cs" />
     <Compile Remove="Migrations\20200327045036_UserSchemaUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20200325234152_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200325234152_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200327233032_SymbolColAddedtoTrade.cs" />
+    <Compile Remove="Migrations\20200327233032_SymbolColAddedtoTrade.Designer.cs" />
+    <Compile Remove="Migrations\20200329020121_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200329020121_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +22,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
     
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

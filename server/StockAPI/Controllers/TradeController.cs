@@ -19,25 +19,10 @@ namespace StockAPI.Controllers
             _context = context;
         }
 
-
         [HttpGet]
         public IEnumerable<Trade> GetAll()
         {
             return _context.Trades.ToList();
-        }
-
-        // For example:
-        // http://localhost:<port #>/api/Trade/1
-
-        [HttpGet("{id}", Name = "GetTrade")]
-        public IActionResult GetById(long id)
-        {
-            var item = _context.Trades.FirstOrDefault(t => t.Id == id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            return new ObjectResult(item);
         }
 
         [HttpPost]
@@ -47,42 +32,64 @@ namespace StockAPI.Controllers
             {
                 return BadRequest();
             }
-            _context.Trades.Add(trade);
-            _context.SaveChanges();
-            return new ObjectResult(trade);
-        }
 
-        [HttpPut]
-        [Route("MyEdit")] // Custom route
-        public IActionResult GetByParams([FromBody]Trade trade)
-        {
-            var item = _context.Trades.Where(t => t.Id == trade.Id).FirstOrDefault();
-            if (item == null)
+
+            // TODO: replace with JWT user id
+            int userId = 1;
+
+            Stock stock = _context.Stocks.SingleOrDefault(s => s.Symbol == trade.Symbol && s.UserId == userId);
+            double balance = stock == null ? 0 : stock.Balance;
+
+            if (stock != null)
             {
-                return NotFound();
+                if (trade.Type == "buy")
+                {
+                    stock.Balance += trade.Quantity;
+                } else if (trade.Type == "sell" && stock.Balance >= trade.Quantity)
+                {
+                    stock.Balance -= trade.Quantity;
+                } else
+                {
+                    return StatusCode(400, "You can't sell the amount that > the available balance");
+                }
+            } else if (trade.Type == "buy")
+            {
+                Stock newStock = new Stock
+                {
+                    Symbol = trade.Symbol,
+                    Balance = trade.Quantity,
+                    UserId = userId
+                };
+
+                _context.Stocks.Add(newStock);
+            } else
+            {
+                return StatusCode(400, $"You don't have any {trade.Symbol}");
+            }
+
+
+            if (trade.Type == "buy" || (trade.Type == "sell" && balance != 0))
+            {
+                Trade newTrade = new Trade
+                {
+                    Price = trade.Price,
+                    Quantity = trade.Quantity,
+                    Symbol = trade.Symbol,
+                    Type = trade.Type,
+                    Date = DateTime.Now,
+                    UserId = userId
+                };
+
+                _context.Trades.Add(newTrade);
+                _context.SaveChanges();
+
+                return new ObjectResult(newTrade);
+
             }
             else
             {
-                item.Type = trade.Type;
-                item.Price = trade.Price;
-                item.Quantity = trade.Quantity;
-                _context.SaveChanges();
+                return StatusCode(400, $"You don't have any {trade.Symbol}");
             }
-            return new ObjectResult(item);
-        }
-
-        [HttpDelete]
-        [Route("MyDelete")] // Custom route
-        public IActionResult MyDelete(long Id)
-        {
-            var item = _context.Trades.Where(t => t.Id == Id).FirstOrDefault();
-            if (item == null)
-            {
-                return NotFound();
-            }
-            _context.Trades.Remove(item);
-            _context.SaveChanges();
-            return new ObjectResult(item);
         }
     }
 }

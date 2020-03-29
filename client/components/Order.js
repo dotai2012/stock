@@ -21,16 +21,16 @@ const styles = StyleSheet.create({
 });
 
 const Order = ({
-  title, side = 'buy', onSubmit, value, onChange, type = 'numeric',
+  title, type = 'buy', onSubmit, value, onChange, input = 'numeric',
 }) => {
   const onDelegateSubmit = useCallback(
-    () => onSubmit(side),
-    [onSubmit, side],
+    () => onSubmit(type),
+    [onSubmit, type],
   );
 
   return (
     <Card title={title} titleStyle={styles.title}>
-      <FormInput label="Amount" value={value} onChange={onChange} type={type} />
+      <FormInput label="Amount" value={value} onChange={onChange} type={input} />
       <Button
         title={title}
         containerStyle={styles.buttonContainer}
