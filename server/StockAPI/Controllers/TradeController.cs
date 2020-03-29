@@ -33,10 +33,13 @@ namespace StockAPI.Controllers
                 return BadRequest();
             }
 
+
             // TODO: replace with JWT user id
             int userId = 1;
 
             Stock stock = _context.Stocks.SingleOrDefault(s => s.Symbol == trade.Symbol && s.UserId == userId);
+            double balance = stock == null ? 0 : stock.Balance;
+
             if (stock != null)
             {
                 if (trade.Type == "buy")
@@ -64,7 +67,8 @@ namespace StockAPI.Controllers
                 return StatusCode(400, $"You don't have any {trade.Symbol}");
             }
 
-            if (stock != null && trade.Type != "sell" && stock.Balance == 0)
+
+            if (trade.Type == "buy" || (trade.Type == "sell" && balance != 0))
             {
                 Trade newTrade = new Trade
                 {
@@ -72,6 +76,7 @@ namespace StockAPI.Controllers
                     Quantity = trade.Quantity,
                     Symbol = trade.Symbol,
                     Type = trade.Type,
+                    Date = DateTime.Now,
                     UserId = userId
                 };
 
