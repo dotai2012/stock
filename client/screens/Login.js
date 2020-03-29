@@ -1,38 +1,49 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
-const BASEURL = "https://localhost:44388/api/values"
+const BASEURL = "http://192.168.1.25:5001/api/values"
+
+const USERBASE = "http://192.168.1.25:5001/api/user"
 
 const Login = (props) => {
   const  [email, setEmail] = useState("")
   const  [password, setPassword] = useState("")
+  const  [name, setName] = useState("")
   const  [message, setMessage] = useState("Login")
   const  [toggle, setToggle] = useState(true)
+
+
+  function fetchAPI(submitBody) {
+    console.log(submitBody)
+    return fetch(BASEURL)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json)
+        return json;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+
 
  handleSubmit = (e) => {
    e.preventDefault();
    console.log(email, password)
+   
+   const submitObj = {
+     Name: name,
+     Email: email,
+     Password: password,
+     Validate: true
+    }
 
-    const controller = new AbortController();
+    if(toggle == false){
+      submitObj.Validate = false
+    }
 
-   const requestLogin = async () => {
-    fetch(BASEURL, {
-      method: 'GET',
-      headers: {
-                   'Accept': 'application/json',
-                      'Content-type': 'application/json',
-                     'Access-Control-Allow-Headers': '*'
-                  },
-      body:JSON.stringify({Name:"testfromClient", Email:"test1234@gmail.com", Password: "1234Test"})
-  }).then((res) => res.json())
-  .then((data) =>  console.log(data))
-  .catch((err)=>console.log(err))
-    }  
- };
-
-    requestLogin();
-
-    return () => controller.abort();
+  fetchAPI(submitObj)
   }
 
   handleSignUp = () => {
