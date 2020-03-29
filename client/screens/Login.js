@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
-const BASEURL = "http://192.168.1.25:5001/api/values"
 
-const USERBASE = "http://192.168.1.25:5001/api/user"
+const USERBASE = "http://192.168.1.73:19000:5001/api/user"
+
+//exp://192.168.1.73:19000
+// const BASEURL = "http://192.168.1.25:5001/api/values"
+// const testurl = "https://localhost:5001/api/values"
 
 const Login = (props) => {
   const  [email, setEmail] = useState("")
@@ -13,24 +16,35 @@ const Login = (props) => {
   const  [toggle, setToggle] = useState(true)
 
 
-  function fetchAPI(submitBody) {
-    console.log(submitBody)
-    return fetch(BASEURL)
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json)
-        return json;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  useEffect(() => {
+    if(sessionStorage.getItem("JWT_USER_TOKEN")){
+      alert("You have already logged in!")
+    }
+    })
+
+  const setCatch = (catchOBj) => { 
+    sessionStorage.setItem("JWT_USER_TOKEN", catchOBj.token)
   }
 
+  const fetchAPI = (submitBody) => {
+    console.log(submitBody)
 
+    fetch(USERBASE, {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-type': 'application/json'
+      }, body: submitBody
+  })
+  .then((response) => setCatch(response))
+  .catch((error) => console.log('fetchToken error: ', error))
+  .done();
+  }
 
- handleSubmit = (e) => {
+ const handleSubmit = (e) => {
    e.preventDefault();
    
+   //this will be sent as the body in fetch request
    const submitObj = {
      Name: name,
      Password: password,
@@ -45,7 +59,7 @@ const Login = (props) => {
   fetchAPI(submitObj)
   }
 
-  handleSignUp = () => {
+  const handleSignUp = _ => {
     setMessage("Register")  
     setToggle(false)
   }
@@ -77,11 +91,11 @@ const Login = (props) => {
             placeholderTextColor="#003f5c"
             onChangeText={text => setPassword(text)}/>
         </View>
-        <TouchableOpacity style={styles.loginBtn} onPress={this.handleSubmit}>
+        <TouchableOpacity style={styles.loginBtn} onPress={handleSubmit}>
           <Text style={styles.loginText}>{message}</Text>
         </TouchableOpacity>  
 
-        {toggle ?   <TouchableOpacity onPress={this.handleSignUp}>
+        {toggle ?   <TouchableOpacity onPress={handleSignUp}>
           <Text style={styles.loginText}>Signup</Text>
         </TouchableOpacity> : <Text></Text>}
       </View>
