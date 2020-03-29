@@ -9,13 +9,16 @@ const USERBASE = "http://192.168.1.73:19000:5001/api/user"
 // const BASEURL = "http://192.168.1.25:5001/api/values"
 // const testurl = "https://localhost:5001/api/values"
 
+
+// may think to add some logic to prevent this page for login users, using:
+//  const [sessionOn, setSessionOn] = useState(false)
+
 const Login = (props) => {
   const  [email, setEmail] = useState("")
   const  [password, setPassword] = useState("")
   const  [name, setName] = useState("")
   const  [message, setMessage] = useState("Login")
   const  [toggle, setToggle] = useState(true)
-  const [sessionOn, setSessionOn] = useState(false)
 
 
   const setCatch = async (catchOBj) => { 
@@ -28,17 +31,18 @@ const Login = (props) => {
 
   const fetchAPI = (submitBody) => {
     console.log(submitBody)
+    setCatch({token: "21rwfjawfkay2"})
 
-    fetch(USERBASE, {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Content-type': 'application/json'
-      }, body: submitBody
-  })
-  .then((response) => setCatch(response))
-  .catch((error) => console.log('fetchToken error: ', error))
-  .done();
+  //   fetch(USERBASE, {
+  //     method: 'POST',
+  //     headers: {
+  //         'Accept': 'application/json',
+  //         'Content-type': 'application/json'
+  //     }, body: submitBody
+  // })
+  // .then((response) => setCatch(response))
+  // .catch((error) => console.log('fetchToken error: ', error))
+  // .done();
   }
 
  const handleSubmit = (e) => {

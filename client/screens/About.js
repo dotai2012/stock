@@ -11,7 +11,7 @@ const About = (props) => {
       if (value == null) {
         console.log("you are not logged in!!!");
         return setToggle(true)
-      } else {
+      } else if (value != null) {
         return setToggle(false)
       }
     } catch (error) {
