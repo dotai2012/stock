@@ -34,9 +34,9 @@ namespace StockAPI.Controllers
             List<Position> positions = new List<Position>();
 
             // TODO: replace with JWT user id
-            var buyTrades = _context.Trades.Where(t => t.UserId == 1).GroupBy(t => t.Symbol);
+            var trades = _context.Trades.Where(t => t.UserId == 1).GroupBy(t => t.Symbol);
 
-            foreach (var trade in buyTrades)
+            foreach (var trade in trades)
             {
                 double totalPrice = 0;
                 double totalQuantity = 0;

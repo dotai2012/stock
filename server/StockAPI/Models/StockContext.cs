@@ -12,8 +12,5 @@ namespace StockAPI.Models
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Trade> Trades { get; set; }
         public DbSet<User> Users { get; set; }
-
-        DbContext.Configuration.ProxyCreationEnabled = true;
-        DbContext.Configuration.LazyLoadingEnabled = true;
     }
 }

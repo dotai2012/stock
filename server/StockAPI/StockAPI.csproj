@@ -10,6 +10,8 @@
     <Compile Remove="Migrations\20200325234152_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200327233032_SymbolColAddedtoTrade.cs" />
     <Compile Remove="Migrations\20200327233032_SymbolColAddedtoTrade.Designer.cs" />
+    <Compile Remove="Migrations\20200329020121_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200329020121_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

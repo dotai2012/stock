@@ -15,6 +15,7 @@ namespace StockAPI.Models
         public string Symbol { get; set; }
         public double Price { get; set; }
         public double Quantity { get; set; }
+        public DateTime Date { get; set; }
         public int UserId { get; set; }
 
         //Navigation Properties
