@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200325234152_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200325234152_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200327233032_SymbolColAddedtoTrade.cs" />
+    <Compile Remove="Migrations\20200327233032_SymbolColAddedtoTrade.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />

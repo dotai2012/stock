@@ -9,8 +9,8 @@ using StockAPI.Models;
 namespace StockAPI.Migrations
 {
     [DbContext(typeof(StockContext))]
-    [Migration("20200327233032_SymbolColAddedtoTrade")]
-    partial class SymbolColAddedtoTrade
+    [Migration("20200329020121_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
