@@ -50,6 +50,7 @@ namespace StockAPI.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(nullable: true),
+                    Symbol = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),
                     Quantity = table.Column<double>(nullable: false),
                     UserId = table.Column<int>(nullable: false)

@@ -17,10 +17,8 @@ namespace StockAPI.Models
         public double Quantity { get; set; }
         public int UserId { get; set; }
 
-
         //Navigation Properties
         //Parent Tables
         public virtual User User { get; set; }
-
     }
 }
