@@ -5,10 +5,13 @@ import { AsyncStorage } from 'react-native';
 
 const USERBASE = "http://192.168.1.73:19000:5001/api/user"
 
-//exp://192.168.1.73:19000
 // const BASEURL = "http://192.168.1.25:5001/api/values"
-// const testurl = "https://localhost:5001/api/values"
+//  const testurl = "https://localhost:5001/api/values"
 
+// const test = "https://192.168.1.73:5001/api/values"
+    const ngrok = "http://a325b80d.ngrok.io/api/values"
+//exp://192.168.1.73:19000
+// https://192.168.0.100:5001/api/trade
 
 // may think to add some logic to prevent this page for login users, using:
 //  const [sessionOn, setSessionOn] = useState(false)
@@ -22,27 +25,40 @@ const Login = (props) => {
 
 
   const setCatch = async (catchOBj) => { 
-    try {
-      await AsyncStorage.setItem('JWT_USER_TOKEN', catchOBj.token)
-    } catch (error) {
-      console.log(error)
-    }
+    console.log(catchOBj)
+    // try {
+    //   await AsyncStorage.setItem('JWT_USER_TOKEN', catchOBj.token)
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
+
+
 
   const fetchAPI = (submitBody) => {
     console.log(submitBody)
-    setCatch({token: "21rwfjawfkay2"})
+    // setCatch({token: "21rwfjawfkay2"})
 
-  //   fetch(USERBASE, {
-  //     method: 'POST',
-  //     headers: {
-  //         'Accept': 'application/json',
-  //         'Content-type': 'application/json'
-  //     }, body: submitBody
-  // })
-  // .then((response) => setCatch(response))
-  // .catch((error) => console.log('fetchToken error: ', error))
-  // .done();
+    const fetchAsync = async () => {
+      try {
+        const data = await (await fetch(ngrok)).json();
+        setCatch(data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+  //    fetch(ngrok, {
+  //      method: 'GET',
+  //      headers: {
+  //          'Accept': 'application/json',
+  //          'Content-type': 'application/json'
+  //      } //, body: submitBody
+  //  })
+  //  .then((response) => setCatch(response.json()))
+  //  .catch((error) => console.log('fetchToken error: ', error))
+  //  .done();
+  fetchAsync();
   }
 
  const handleSubmit = (e) => {
