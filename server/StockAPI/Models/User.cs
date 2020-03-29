@@ -14,14 +14,11 @@ namespace StockAPI.Models
         public string Name  { get; set; }
         public string Email  { get; set; }
         public string Password { get; set; }
+        public bool Validate { get; set; }
 
         //Navigation Properties
         //Child Tables
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<Trade> Trades { get; set; }
-
-
-
-
     }
 }
