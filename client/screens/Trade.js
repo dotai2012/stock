@@ -55,7 +55,7 @@ const Trade = (props) => {
           type,
           symbol,
           price: quote.c,
-          quantity: amountBuy,
+          quantity: type === 'buy' ? amountBuy : amountSell,
         }),
       });
 

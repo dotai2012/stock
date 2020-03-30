@@ -5,23 +5,25 @@ import RouteApp from './routes';
 import Header from './components/Header';
 import { navigation } from './services/navigation';
 import { getItem } from './services/storage';
+import api from './services/api';
+import { baseUrl } from './config';
 
 export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [auth, setAuth] = useState('');
 
   useEffect(() => {
-    const fetchToken = async () => {
+    const checkAuth = async () => {
       const token = await getItem('token');
-      console.log(token);
+      const { status } = await api(`${baseUrl}/stock`);
 
-      if (token) {
-        setAuth(auth);
+      if (token && status === 200) {
+        setAuth(token);
       }
       setAuthLoading(false);
     };
 
-    fetchToken();
+    checkAuth();
   }, [auth]);
 
   return (

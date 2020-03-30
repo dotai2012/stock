@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 import { baseUrl } from '../config';
-import { setItem, getItem } from '../services/storage';
+import { setItem } from '../services/storage';
 
 const styles = StyleSheet.create({
   container: {
