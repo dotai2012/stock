@@ -11,11 +11,17 @@ namespace StockAPI.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public string Type { get; set; }
+        [Required]
         public string Symbol { get; set; }
+        [Required]
         public double Price { get; set; }
+        [Required]
         public double Quantity { get; set; }
+        [Required]
         public DateTime Date { get; set; }
+        [Required]
         public int UserId { get; set; }
 
         //Navigation Properties

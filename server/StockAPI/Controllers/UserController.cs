@@ -25,6 +25,37 @@ namespace StockAPI.Controllers
         private readonly StockContext _context;
         private IConfiguration _config;
 
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != storedHash[i]) return false;
+                }
+            }
+
+            return true;
+        }
+
         public UserController(StockContext context, IConfiguration config)
         {
             _context = context;
@@ -50,59 +81,67 @@ namespace StockAPI.Controllers
             return new ObjectResult(item);
         }
 
+        public class AuthenticationForm
+        {
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }
+            public string Type { get; set; }
+        }
+
         //register/login handler 
         //optional login body included here
         [HttpPost]
-        public dynamic Create([FromBody]User user)
+        public dynamic Create([FromBody]AuthenticationForm form)
         {
             dynamic jsonResponse = new JObject();
 
-            if (user.Name == "" || user.Name == null) 
+            if (form.Email == "" || form.Email == null)
             {
                 return BadRequest();
             }
 
-            //if from the client this key has been set to true, we assume they want to login, and we execute this logic.
-            //if not, we treat this as a new post requst to register (generate) a user.
-            // on the client, this register post request must be set to false as the default...
+            var uniqueEmail = _context.Users.Count(e => e.Email == form.Email);
 
-            if (user.Validate == true)
+            if (form.Type == "login")
             {
-                bool testLogin = ValidateLogin(user);
+                User findUser = _context.Users.FirstOrDefault(u => u.Name == form.Email);
+                bool testLogin = ValidateLogin(form.Password, findUser);
+
                 if (testLogin == true)
-                 {
-                var tokenString = GenerateJSONWebToken(user);
-                jsonResponse.token = tokenString;
-                jsonResponse.status = "OK";
-                return jsonResponse;
-                } else {
+                {
+                    var tokenString = GenerateJSONWebToken(findUser);
+                    jsonResponse.token = tokenString;
+                    jsonResponse.status = "OK";
+                    return jsonResponse;
+                }
+                else
+                {
                     return BadRequest();
                 }
-            } 
-            else
+            }
+            else if(form.Type == "register" && uniqueEmail == 0)
             {
-                _context.Users.Add(user);
+                byte[] passwordHash, passwordSalt;
+                CreatePasswordHash(form.Password, out passwordHash, out passwordSalt);
+
+                User newUser = new User
+                {
+                    Name = form.Name,
+                    Email = form.Email,
+                    Password = passwordHash,
+                    PasswordSalt = passwordSalt
+                };
+                _context.Users.Add(newUser);
                 _context.SaveChanges();
-                new ObjectResult(user);
-                var tokenString = GenerateJSONWebToken(user);
+
+                var tokenString = GenerateJSONWebToken(newUser);
                 jsonResponse.token = tokenString;
                 jsonResponse.status = "OK";
                 return jsonResponse;
             }
-        }
 
-        [HttpDelete]
-        [Route("MyDelete")] // Custom route
-        public IActionResult MyDelete(long Id)
-        {
-            var item = _context.Users.Where(t => t.Id == Id).FirstOrDefault();
-            if (item == null)
-            {
-                return NotFound();
-            }
-            _context.Users.Remove(item);
-            _context.SaveChanges();
-            return new ObjectResult(item);
+            return "Failed to authenticate, please try again";
         }
 
         string GenerateJSONWebToken(User user)
@@ -112,24 +151,25 @@ namespace StockAPI.Controllers
             var credentials
                 = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+            var claims = new List<Claim> {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti,
+                            Guid.NewGuid().ToString()),
+                new Claim("userId", user.Id.ToString())
+            };
+
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Issuer"],
+                claims,
                 expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         //find if name/password exist in DB context.
-        bool ValidateLogin(User user)
-        {
-           var item = _context.Users.FirstOrDefault(t => t.Name == user.Name && t.Password == user.Password);
-             if (item == null)
-              {
-               return false;
-              }
-
-            return true;
+        bool ValidateLogin(string password, User user)
+            {
+                return VerifyPasswordHash(password, user.Password, user.PasswordSalt);
             }
-
         }
     }

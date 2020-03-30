@@ -56,7 +56,6 @@ const Trade = (props) => {
           symbol,
           price: quote.c,
           quantity: amountBuy,
-          userId: 1,
         }),
       });
 

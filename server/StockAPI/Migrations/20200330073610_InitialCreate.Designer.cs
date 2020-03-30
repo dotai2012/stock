@@ -10,7 +10,7 @@ using StockAPI.Models;
 namespace StockAPI.Migrations
 {
     [DbContext(typeof(StockContext))]
-    [Migration("20200329061818_InitialCreate")]
+    [Migration("20200330073610_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,8 @@ namespace StockAPI.Migrations
 
                     b.Property<double>("Balance");
 
-                    b.Property<string>("Symbol");
+                    b.Property<string>("Symbol")
+                        .IsRequired();
 
                     b.Property<int>("UserId");
 
@@ -52,9 +53,11 @@ namespace StockAPI.Migrations
 
                     b.Property<double>("Quantity");
 
-                    b.Property<string>("Symbol");
+                    b.Property<string>("Symbol")
+                        .IsRequired();
 
-                    b.Property<string>("Type");
+                    b.Property<string>("Type")
+                        .IsRequired();
 
                     b.Property<int>("UserId");
 
@@ -71,11 +74,17 @@ namespace StockAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("Password");
+                    b.Property<byte[]>("Password")
+                        .IsRequired();
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

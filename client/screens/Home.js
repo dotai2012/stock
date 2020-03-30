@@ -6,7 +6,7 @@ const Home = () => {
 
   const retrieveToken = async () => {
     try {
-      const value = await AsyncStorage.getItem('JWT_USER_TOKEN');
+      const value = await AsyncStorage.getItem('token');
       if (value == null) {
         console.log('you are not logged in!!!');
         return setToggle(true);

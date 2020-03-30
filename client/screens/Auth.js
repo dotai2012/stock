@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, TextInput, TouchableOpacity, AsyncStorage,
+  StyleSheet, Text, View, TextInput, TouchableOpacity,
 } from 'react-native';
 import { baseUrl } from '../config';
+import { setItem } from '../services/storage';
 
 // may think to add some logic to prevent this page for login users, using:
 //  const [sessionOn, setSessionOn] = useState(false)
@@ -21,7 +22,8 @@ const styles = StyleSheet.create({
   },
   inputView: {
     width: '80%',
-    backgroundColor: '#465881',
+    borderColor: 'red',
+    borderWidth: 1,
     borderRadius: 25,
     height: 50,
     marginBottom: 20,
@@ -30,80 +32,58 @@ const styles = StyleSheet.create({
   },
   inputText: {
     height: 50,
-    color: 'white',
   },
-  loginBtn: {
-    width: '80%',
+  authBtn: {
+    width: '60%',
     backgroundColor: '#fb5b5a',
     borderRadius: 25,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
-    marginBottom: 10,
+    marginTop: 15,
   },
-  loginText: {
-    color: 'blue',
+  authText: {
+    color: 'white',
   },
 });
 
-const Login = () => {
+const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('Login');
   const [toggle, setToggle] = useState(true);
 
-  const setCatch = async (catchOBj) => {
-    console.log(catchOBj);
-    try {
-      await AsyncStorage.setItem('JWT_USER_TOKEN', catchOBj.token);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchAPI = (submitBody) => {
-    const fetchAsync = async () => {
-      try {
-        const data = await (await fetch(`${baseUrl}/user`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify(submitBody),
-        })).json();
-        setCatch(data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    fetchAsync();
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // this will be sent as the body in fetch request
     const submitObj = {
       Name: name,
       Password: password,
-      Validate: true,
     };
 
     if (toggle === false) {
-      submitObj.Validate = false;
       submitObj.Email = email;
     }
 
-    fetchAPI(submitObj);
+    try {
+      const data = await fetch(`${baseUrl}/user`, {
+        method: 'POST',
+        body: JSON.stringify(submitObj),
+      });
+
+      console.log(baseUrl, submitObj, data);
+
+      // await setItem('token', data.token, 120);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSignUp = () => {
-    setMessage('Register');
-    setToggle(false);
+    setMessage(toggle ? 'Register' : 'Login');
+    setToggle(!toggle);
   };
 
   return (
@@ -138,17 +118,15 @@ const Login = () => {
           onChangeText={(text) => setPassword(text)}
         />
       </View>
-      <TouchableOpacity style={styles.loginBtn} onPress={handleSubmit}>
-        <Text style={styles.loginText}>{message}</Text>
+      <TouchableOpacity style={styles.authBtn} onPress={handleSubmit}>
+        <Text style={styles.authText}>Submit</Text>
       </TouchableOpacity>
 
-      {toggle ? (
-        <TouchableOpacity onPress={handleSignUp}>
-          <Text style={styles.loginText}>Signup</Text>
-        </TouchableOpacity>
-      ) : <Text />}
+      <TouchableOpacity style={styles.authBtn} onPress={handleSignUp}>
+        <Text style={styles.authText}>{toggle ? 'New here? Register' : 'Already a member? Login'}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default Login;
+export default Auth;

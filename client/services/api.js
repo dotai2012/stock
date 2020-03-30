@@ -1,7 +1,7 @@
-import { AsyncStorage } from 'react-native';
+import { getItem } from './storage';
 
 const api = async (url, opts) => {
-  const token = (await AsyncStorage.getItem('JWT_USER_TOKEN')) || '';
+  const token = (await getItem('token')) || '';
 
   fetch(url, {
     headers: {

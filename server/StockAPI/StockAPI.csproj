@@ -14,6 +14,18 @@
     <Compile Remove="Migrations\20200327233032_SymbolColAddedtoTrade.Designer.cs" />
     <Compile Remove="Migrations\20200329020121_InitialCreate.cs" />
     <Compile Remove="Migrations\20200329020121_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200329061818_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200329061818_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330050358_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330050358_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330050553_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330050553_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330050956_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330050956_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330065242_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330065242_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330071245_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330071245_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
