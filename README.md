@@ -1,4 +1,9 @@
-# mobile_project
+# Mobile Project
+1.[Technologies](#1)
+2.[Installation](#2)
+3.[Team](#3)
+##1) Technologies:
 
-See Wiki: Standups for daily summary.
-When commit, please use your own branch
+
+
+
