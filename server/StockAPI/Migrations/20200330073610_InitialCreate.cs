@@ -14,9 +14,10 @@ namespace StockAPI.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Password = table.Column<byte[]>(nullable: false),
+                    PasswordSalt = table.Column<byte[]>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +30,7 @@ namespace StockAPI.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Symbol = table.Column<string>(nullable: true),
+                    Symbol = table.Column<string>(nullable: false),
                     Balance = table.Column<double>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
@@ -50,8 +51,8 @@ namespace StockAPI.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Type = table.Column<string>(nullable: true),
-                    Symbol = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: false),
+                    Symbol = table.Column<string>(nullable: false),
                     Price = table.Column<double>(nullable: false),
                     Quantity = table.Column<double>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),

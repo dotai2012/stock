@@ -11,10 +11,15 @@ namespace StockAPI.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public string Name  { get; set; }
+        [Required]
+        [EmailAddress]
         public string Email  { get; set; }
-        public string Password { get; set; }
-        public bool Validate { get; set; }
+        [Required]
+        public byte[] Password { get; set; }
+        [Required]
+        public byte[] PasswordSalt { get; set; }
 
         //Navigation Properties
         //Child Tables

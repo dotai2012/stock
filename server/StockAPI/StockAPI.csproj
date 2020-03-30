@@ -14,11 +14,24 @@
     <Compile Remove="Migrations\20200327233032_SymbolColAddedtoTrade.Designer.cs" />
     <Compile Remove="Migrations\20200329020121_InitialCreate.cs" />
     <Compile Remove="Migrations\20200329020121_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200329061818_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200329061818_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330050358_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330050358_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330050553_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330050553_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330050956_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330050956_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330065242_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330065242_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200330071245_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200330071245_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />

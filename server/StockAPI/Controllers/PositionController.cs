@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +14,21 @@ namespace StockAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class PositionController : ControllerBase
     {
         private readonly StockContext _context;
+        private readonly int _userId;
 
-        public PositionController(StockContext context)
+        public PositionController(StockContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+
+            var bearer = httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(bearer.ToString().Replace("Bearer " , ""));
+            _userId = int.Parse(token.Id);
         }
 
         public class Position
@@ -34,7 +45,7 @@ namespace StockAPI.Controllers
             List<Position> positions = new List<Position>();
 
             // TODO: replace with JWT user id
-            var trades = _context.Trades.Where(t => t.UserId == 1).GroupBy(t => t.Symbol);
+            var trades = _context.Trades.Where(t => t.UserId == _userId).GroupBy(t => t.Symbol);
 
             foreach (var trade in trades)
             {

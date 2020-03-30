@@ -1,0 +1,4 @@
+const baseUrl = 'http://a325b80d.ngrok.io/api';
+const finnhubToken = 'bpltuifrh5rdbt8o5fpg'; 
+
+export { baseUrl, finnhubToken };

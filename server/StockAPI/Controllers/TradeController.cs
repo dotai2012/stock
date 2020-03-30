@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StockAPI.Models;
@@ -10,13 +13,21 @@ namespace StockAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class TradeController : ControllerBase
     {
         private readonly StockContext _context;
+        private readonly int _userId;
 
-        public TradeController(StockContext context)
+        public TradeController(StockContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+
+            var bearer = httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(bearer.ToString().Replace("Bearer " , ""));
+            _userId = int.Parse(token.Id);
         }
 
         [HttpGet]
@@ -33,11 +44,7 @@ namespace StockAPI.Controllers
                 return BadRequest();
             }
 
-
-            // TODO: replace with JWT user id
-            int userId = 1;
-
-            Stock stock = _context.Stocks.SingleOrDefault(s => s.Symbol == trade.Symbol && s.UserId == userId);
+            Stock stock = _context.Stocks.SingleOrDefault(s => s.Symbol == trade.Symbol && s.UserId == _userId);
             double balance = stock == null ? 0 : stock.Balance;
 
             if (stock != null)
@@ -58,7 +65,7 @@ namespace StockAPI.Controllers
                 {
                     Symbol = trade.Symbol,
                     Balance = trade.Quantity,
-                    UserId = userId
+                    UserId = _userId
                 };
 
                 _context.Stocks.Add(newStock);
@@ -77,7 +84,7 @@ namespace StockAPI.Controllers
                     Symbol = trade.Symbol,
                     Type = trade.Type,
                     Date = DateTime.Now,
-                    UserId = userId
+                    UserId = _userId
                 };
 
                 _context.Trades.Add(newTrade);

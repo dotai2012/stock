@@ -6,36 +6,27 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AsyncStorage } from 'react-native';
 
-import Login from './screens/Login';
 import Home from './screens/Home';
 import Trade from './screens/Trade';
 import About from './screens/About';
 import Search from './screens/Search';
+import { deleteItem } from './services/storage';
+import Auth from './screens/Auth';
+import Loading from './components/Loading';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
-
 function DrawerContent(props) {
-
-const delSession = async () => {
-  try {
-    const value = await AsyncStorage.removeItem('JWT_USER_TOKEN');
-    if (value == null) {
-      console.log("session deleted");
+  const handleLogout = async () => {
+    try {
+      await deleteItem('token');
+      props.setAuth('');
+    } catch (e) {
+      console.error(e);
     }
-  } catch (error) {
-    console.log("problem deleting session", error)
-  }
-};
-
-  const handleLogout = () => {
-    delSession()
-    props.navigation.toggleDrawer()
-    props.navigation.navigate('Login')
-  }
+  };
 
   return (
     <DrawerContentScrollView {...props}>
@@ -48,24 +39,42 @@ const delSession = async () => {
   );
 }
 
-const Root = () => (
+const Root = ({ setAuth }) => (
   <Drawer.Navigator
-    drawerContent={(props) => DrawerContent(props)}
+    drawerContent={(props) => DrawerContent({ ...props, setAuth })}
   >
-    <Drawer.Screen name="Login" component={Login} />
     <Drawer.Screen name="Home" component={Home} />
+    <Drawer.Screen name="Trade" component={Trade} />
     <Drawer.Screen name="About" component={About} />
   </Drawer.Navigator>
 );
 
-function RouteApp() {
+function RouteApp({ auth, authLoading, setAuth }) {
+  const renderRoutes = () => {
+    if (auth && !authLoading) {
+      return (
+        <>
+          <Stack.Screen
+            name="Root"
+          >
+            {() => <Root setAuth={setAuth} />}
+          </Stack.Screen>
+          <Stack.Screen name="Search" component={Search} />
+        </>
+      );
+    } if (!auth && !authLoading) {
+      return (
+        <Stack.Screen name="Auth">
+          {() => <Auth setAuth={setAuth} />}
+        </Stack.Screen>
+      );
+    }
+    return <Stack.Screen name="Loading" component={Loading} />;
+  };
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name="Root"
-        component={Root}
-      />
-      <Stack.Screen name="Search" component={Search} />
+      {renderRoutes()}
     </Stack.Navigator>
   );
 }

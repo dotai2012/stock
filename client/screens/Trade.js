@@ -7,6 +7,8 @@ import { Card, Text } from 'react-native-elements';
 import TradingView from '../components/TradingView';
 import Order from '../components/Order';
 import { navigate } from '../services/navigation';
+import { finnhubToken, baseUrl } from '../config';
+import api from '../services/api';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +36,7 @@ const Trade = (props) => {
 
     const fetchQuote = async () => {
       try {
-        const data = await (await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=bpltuifrh5rdbt8o5fpg`, { signal: controller.signal })).json();
+        const data = await (await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${finnhubToken}`, { signal: controller.signal })).json();
         setQuote(data);
       } catch (e) {
         console.error(e);
@@ -47,15 +49,13 @@ const Trade = (props) => {
 
   const onTrade = async (type) => {
     try {
-      // TODO: fix relative url and userID
-      await fetch('/api/trade', {
+      await api(`${baseUrl}/trade`, {
         method: 'POST',
         body: JSON.stringify({
           type,
           symbol,
           price: quote.c,
           quantity: amountBuy,
-          userId: 1,
         }),
       });
 
