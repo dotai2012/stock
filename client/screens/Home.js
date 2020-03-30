@@ -12,6 +12,8 @@ import moment from 'moment';
 import api from '../services/api';
 import { baseUrl, finnhubToken } from '../config';
 
+const { width } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   totalPortfolio: {
     fontSize: 40,
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
 
 const Home = () => {
   const [total, setTotal] = useState(0);
-  const [portfolios, setPortfolio] = useState([]);
+  const [portfolios, setPortfolio] = useState([{ date: moment().format('MM-DD-YYYY'), total: 0 }]);
   const [stocks, setStocks] = useState([]);
   const [positions, setPositions] = useState([]);
   const navigation = useNavigation();
@@ -76,7 +78,7 @@ const Home = () => {
               },
             ],
           }}
-          width={Dimensions.get('window').width * 0.9} // from react-native
+          width={width * 0.9}
           height={220}
           yAxisLabel="$"
           yAxisInterval={1}
