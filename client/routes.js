@@ -23,10 +23,8 @@ function DrawerContent(props) {
 const delSession = async () => {
   try {
     const value = await AsyncStorage.removeItem('JWT_USER_TOKEN');
-    if (value !== null) {
+    if (value == null) {
       console.log("session deleted");
-    } else {
-      console.log("no token")
     }
   } catch (error) {
     console.log("problem deleting session", error)
@@ -34,8 +32,8 @@ const delSession = async () => {
 };
 
   const handleLogout = () => {
-    props.navigation.toggleDrawer()
     delSession()
+    props.navigation.toggleDrawer()
     props.navigation.navigate('Login')
   }
 
@@ -56,7 +54,6 @@ const Root = () => (
   >
     <Drawer.Screen name="Login" component={Login} />
     <Drawer.Screen name="Home" component={Home} />
-    <Drawer.Screen name="Trade" component={Trade} />
     <Drawer.Screen name="About" component={About} />
   </Drawer.Navigator>
 );

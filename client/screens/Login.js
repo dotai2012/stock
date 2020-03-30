@@ -14,6 +14,7 @@ const Login = (props) => {
   const  [name, setName] = useState("")
   const  [message, setMessage] = useState("Login")
   const  [toggle, setToggle] = useState(true)
+  const  [error, setError] = useState(false)
 
 
   const setCatch = async (catchOBj) => { 
@@ -21,8 +22,10 @@ const Login = (props) => {
      try {
        await AsyncStorage.setItem('JWT_USER_TOKEN', catchOBj.token)
        console.log("token has been set...")
+       setError(false)
        props.navigation.navigate('Home')
      } catch (error) {
+       setError(true)
        console.log(error)
      }
   }
@@ -42,6 +45,7 @@ const Login = (props) => {
         })).json();
         setCatch(data);
       } catch (e) {
+        setError(true)
         console.error(e);
       }
     };
@@ -74,6 +78,7 @@ const Login = (props) => {
 
     return (
       <View style={styles.container}>
+        {error ? <Text>You have entered an incorrect password. Please try again.</Text> : <Text></Text>}
         <Text style={styles.logo}>{message}</Text>
 
         {toggle ?  <TextInput></TextInput> :  <View style={styles.inputView} >
