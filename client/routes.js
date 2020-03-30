@@ -19,18 +19,13 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 function DrawerContent(props) {
-  const delSession = async () => {
+  const handleLogout = async () => {
     try {
       await deleteItem('token');
+      props.setAuth('');
     } catch (e) {
       console.error(e);
     }
-  };
-
-  const handleLogout = () => {
-    delSession();
-    props.navigation.toggleDrawer();
-    props.navigation.navigate('Login');
   };
 
   return (
@@ -44,9 +39,9 @@ function DrawerContent(props) {
   );
 }
 
-const Root = () => (
+const Root = ({ setAuth }) => (
   <Drawer.Navigator
-    drawerContent={(props) => DrawerContent(props)}
+    drawerContent={(props) => DrawerContent({ ...props, setAuth })}
   >
     <Drawer.Screen name="Home" component={Home} />
     <Drawer.Screen name="Trade" component={Trade} />
@@ -61,13 +56,18 @@ function RouteApp({ auth, authLoading, setAuth }) {
         <>
           <Stack.Screen
             name="Root"
-            component={Root}
-          />
+          >
+            {() => <Root setAuth={setAuth} />}
+          </Stack.Screen>
           <Stack.Screen name="Search" component={Search} />
         </>
       );
     } if (!auth && !authLoading) {
-      return <Stack.Screen name="Auth" component={() => <Auth setAuth={setAuth} />} />;
+      return (
+        <Stack.Screen name="Auth">
+          {() => <Auth setAuth={setAuth} />}
+        </Stack.Screen>
+      );
     }
     return <Stack.Screen name="Loading" component={Loading} />;
   };

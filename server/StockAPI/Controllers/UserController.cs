@@ -157,8 +157,7 @@ namespace StockAPI.Controllers
             var claims = new List<Claim> {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti,
-                            Guid.NewGuid().ToString()),
-                new Claim("userId", user.Id.ToString())
+                            user.Id.ToString()),
             };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
