@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, TextInput, TouchableOpacity,
 } from 'react-native';
-import { baseUrl } from '../config';
-import { setItem } from '../services/storage';
 
-// may think to add some logic to prevent this page for login users, using:
-//  const [sessionOn, setSessionOn] = useState(false)
+import { baseUrl } from '../config';
+import { setItem, getItem } from '../services/storage';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,7 +45,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Auth = () => {
+const Auth = ({ setAuth }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -59,23 +57,28 @@ const Auth = () => {
 
     // this will be sent as the body in fetch request
     const submitObj = {
-      Name: name,
-      Password: password,
+      email,
+      password,
+      type: 'login',
     };
 
-    if (toggle === false) {
-      submitObj.Email = email;
+    if (!toggle) {
+      submitObj.name = name;
+      submitObj.type = 'register';
     }
 
     try {
-      const data = await fetch(`${baseUrl}/user`, {
+      const data = await (await fetch(`${baseUrl}/user`, {
         method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(submitObj),
-      });
+      })).json();
 
-      console.log(baseUrl, submitObj, data);
-
-      // await setItem('token', data.token, 120);
+      await setItem('token', data.token, 120 * 60); // 120 minutes
+      setAuth(data.token);
     } catch (error) {
       console.error(error);
     }
@@ -90,25 +93,26 @@ const Auth = () => {
     <View style={styles.container}>
       <Text style={styles.logo}>{message}</Text>
 
-      {toggle ? <TextInput /> : (
+      {!toggle ? (
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
-            placeholder="Enter your email..."
+            placeholder="Name..."
             placeholderTextColor="#003f5c"
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={(text) => setName(text)}
           />
         </View>
-      )}
+      ) : null}
 
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
-          placeholder="User Name..."
+          placeholder="Email..."
           placeholderTextColor="#003f5c"
-          onChangeText={(text) => setName(text)}
+          onChangeText={(text) => setEmail(text)}
         />
       </View>
+
       <View style={styles.inputView}>
         <TextInput
           secureTextEntry

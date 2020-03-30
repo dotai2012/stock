@@ -105,10 +105,11 @@ namespace StockAPI.Controllers
 
             if (form.Type == "login")
             {
-                User findUser = _context.Users.FirstOrDefault(u => u.Name == form.Email);
-                bool testLogin = ValidateLogin(form.Password, findUser);
+                User findUser = _context.Users.FirstOrDefault(u => u.Email == form.Email);
 
-                if (testLogin == true)
+                bool testLogin = findUser != null ? ValidateLogin(form.Password, findUser) : false;
+
+                if (testLogin)
                 {
                     var tokenString = GenerateJSONWebToken(findUser);
                     jsonResponse.token = tokenString;
@@ -141,7 +142,9 @@ namespace StockAPI.Controllers
                 return jsonResponse;
             }
 
-            return "Failed to authenticate, please try again";
+            jsonResponse.msg = "Failed to authenticate, please try again";
+
+            return jsonResponse;
         }
 
         string GenerateJSONWebToken(User user)

@@ -6,6 +6,8 @@ const api = async (url, opts) => {
   fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
     ...opts,
   });

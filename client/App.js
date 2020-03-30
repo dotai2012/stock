@@ -13,11 +13,12 @@ export default function App() {
   useEffect(() => {
     const fetchToken = async () => {
       const token = await getItem('token');
+      console.log(token);
 
       if (token) {
         setAuth(auth);
-        setAuthLoading(false);
       }
+      setAuthLoading(false);
     };
 
     fetchToken();
@@ -26,8 +27,8 @@ export default function App() {
   return (
     <>
       {auth ? <Header /> : null}
-      <NavigationContainer ref={navigation} authLoading={authLoading} auth={auth}>
-        <RouteApp />
+      <NavigationContainer ref={navigation}>
+        <RouteApp authLoading={authLoading} auth={auth} setAuth={setAuth} />
       </NavigationContainer>
     </>
   );

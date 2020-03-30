@@ -6,7 +6,6 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Text } from 'react-native';
 
 import Home from './screens/Home';
 import Trade from './screens/Trade';
@@ -14,6 +13,7 @@ import About from './screens/About';
 import Search from './screens/Search';
 import { deleteItem } from './services/storage';
 import Auth from './screens/Auth';
+import Loading from './components/Loading';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -54,7 +54,7 @@ const Root = () => (
   </Drawer.Navigator>
 );
 
-function RouteApp({ auth, authLoading }) {
+function RouteApp({ auth, authLoading, setAuth }) {
   const renderRoutes = () => {
     if (auth && !authLoading) {
       return (
@@ -67,9 +67,9 @@ function RouteApp({ auth, authLoading }) {
         </>
       );
     } if (!auth && !authLoading) {
-      return <Stack.Screen name="Auth" component={Auth} />;
+      return <Stack.Screen name="Auth" component={() => <Auth setAuth={setAuth} />} />;
     }
-    return <Stack.Screen name="Loading" component={<Text>Loading...</Text>} />;
+    return <Stack.Screen name="Loading" component={Loading} />;
   };
 
   return (
