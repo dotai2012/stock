@@ -6,7 +6,7 @@
 
 <a name="1"></a>
 # 1. Technologies:
-In this project we have used the follwoing Technologies:
+In this project we have used the following Technologies:
 1. React Native
 2. ASP.net(API) 
 3. Sql-Server
