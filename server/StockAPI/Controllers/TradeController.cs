@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StockAPI.Models;
@@ -10,6 +12,16 @@ namespace StockAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+    //     public TodoController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) {
+    //     _context = context;
+    //     var bearer = httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+    //     var handler = new JwtSecurityTokenHandler();
+    //     var token = handler.ReadJwtToken(bearer.ToString().Replace("Bearer " , ""));
+    //     _email = token.Subject;
+    // }
+
     public class TradeController : ControllerBase
     {
         private readonly StockContext _context;

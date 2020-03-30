@@ -17,26 +17,24 @@ import Search from './screens/Search';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
-
 function DrawerContent(props) {
-
-const delSession = async () => {
-  try {
-    const value = await AsyncStorage.removeItem('JWT_USER_TOKEN');
-    if (value !== null) {
-      console.log("session deleted");
-    } else {
-      console.log("no token")
+  const delSession = async () => {
+    try {
+      const value = await AsyncStorage.removeItem('JWT_USER_TOKEN');
+      if (value !== null) {
+        console.log('session deleted');
+      } else {
+        console.log('no token');
+      }
+    } catch (error) {
+      console.log('problem deleting session', error);
     }
-  } catch (error) {
-    console.log("problem deleting session", error)
-  }
-};
+  };
 
   const handleLogout = () => {
-    props.navigation.toggleDrawer()
-    delSession()
-  }
+    props.navigation.toggleDrawer();
+    delSession();
+  };
 
   return (
     <DrawerContentScrollView {...props}>
