@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { AsyncStorage } from 'react-native';
 
-
  //exp://192.168.1.73:19000
- const ngrok = "http://a325b80d.ngrok.io/api/user"
+ const ngrok = "http://a6cd26a1.ngrok.io/api/user"
 
 // may think to add some logic to prevent this page for login users, using:
 //  const [sessionOn, setSessionOn] = useState(false)
@@ -18,9 +17,11 @@ const Login = (props) => {
 
 
   const setCatch = async (catchOBj) => { 
-    console.log(catchOBj)
+    console.log("token from server",catchOBj)
      try {
        await AsyncStorage.setItem('JWT_USER_TOKEN', catchOBj.token)
+       console.log("token has been set...")
+       props.navigation.navigate('Home')
      } catch (error) {
        console.log(error)
      }

@@ -36,6 +36,7 @@ const delSession = async () => {
   const handleLogout = () => {
     props.navigation.toggleDrawer()
     delSession()
+    props.navigation.navigate('Login')
   }
 
   return (
