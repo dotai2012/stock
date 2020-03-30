@@ -63,7 +63,7 @@ namespace StockAPI.Controllers
                 Performance newPerformance = new Performance
                 {
                     Total = totalWorth,
-                    Date = DateTime.Now,
+                    Date = trade.Key,
                 };
 
                 portfolio.Add(newPerformance);

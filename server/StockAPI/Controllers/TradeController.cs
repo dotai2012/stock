@@ -75,7 +75,7 @@ namespace StockAPI.Controllers
             }
 
 
-            if (trade.Type == "buy" || (trade.Type == "sell" && balance != 0))
+            if (trade.Type == "buy" || (trade.Type == "sell" && balance > 0 && trade.Quantity <= balance))
             {
                 Trade newTrade = new Trade
                 {

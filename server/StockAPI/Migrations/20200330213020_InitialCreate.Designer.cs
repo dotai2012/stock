@@ -10,7 +10,7 @@ using StockAPI.Models;
 namespace StockAPI.Migrations
 {
     [DbContext(typeof(StockContext))]
-    [Migration("20200330073610_InitialCreate")]
+    [Migration("20200330213020_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
