@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { AsyncStorage } from 'react-native';
 
-
  //exp://192.168.1.73:19000
- const ngrok = "http://a325b80d.ngrok.io/api/user"
+ const ngrok = "http://a6cd26a1.ngrok.io/api/user"
 
 // may think to add some logic to prevent this page for login users, using:
 //  const [sessionOn, setSessionOn] = useState(false)
@@ -15,13 +14,18 @@ const Login = (props) => {
   const  [name, setName] = useState("")
   const  [message, setMessage] = useState("Login")
   const  [toggle, setToggle] = useState(true)
+  const  [error, setError] = useState(false)
 
 
   const setCatch = async (catchOBj) => { 
-    console.log(catchOBj)
+    console.log("token from server",catchOBj)
      try {
        await AsyncStorage.setItem('JWT_USER_TOKEN', catchOBj.token)
+       console.log("token has been set...")
+       setError(false)
+       props.navigation.navigate('Home')
      } catch (error) {
+       setError(true)
        console.log(error)
      }
   }
@@ -41,6 +45,7 @@ const Login = (props) => {
         })).json();
         setCatch(data);
       } catch (e) {
+        setError(true)
         console.error(e);
       }
     };
@@ -73,6 +78,7 @@ const Login = (props) => {
 
     return (
       <View style={styles.container}>
+        {error ? <Text>You have entered an incorrect password. Please try again.</Text> : <Text></Text>}
         <Text style={styles.logo}>{message}</Text>
 
         {toggle ?  <TextInput></TextInput> :  <View style={styles.inputView} >

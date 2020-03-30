@@ -8,10 +8,12 @@ const About = (props) => {
   const retrieveToken = async () => {
     try {
       const value = await AsyncStorage.getItem('JWT_USER_TOKEN');
+      console.log(value)
       if (value == null) {
         console.log("you are not logged in!!!");
         return setToggle(true)
       } else if (value != null) {
+        console.log("user is logged in")
         return setToggle(false)
       }
     } catch (error) {
@@ -22,7 +24,7 @@ const About = (props) => {
 
   useEffect(() => {
      retrieveToken()
-    })
+    }, [])
     
 return( 
   <View>
