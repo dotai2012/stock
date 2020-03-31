@@ -7,9 +7,8 @@
 6.[Team](#6)
 
 
-
 <a name="1"></a>
-# 2. About:
+# 1. About:
 <p> This is a simple mobile application allowing users to buy or sell stocks, and build a portfolio with the current valuation of their stocks. </p> 
 
 #### Example of buying/selling stock:
@@ -50,7 +49,7 @@ This repo should be cloned to your local machine using https://github.com/tomkf/
 <a name="4"></a>
 # 4. Running the Application
 1. After installing the dependencies, from the client folder run the command "npm start" 
-2. This will open the Expo client in your browser, from here ensure "lan" is selected, and copy paste this address to your clipboard.
+2. This will open the Expo client in your browser, from here ensure "Lan" is selected, and copy paste this address to your clipboard.
 3. Run an emulator of your choice (we choose to use BlueStacks for development), and copy paste the lan address to it. 
 
 <a name="5"></a>
