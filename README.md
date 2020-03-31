@@ -21,26 +21,26 @@ In this project we have used the following Technologies:
 2. ASP.net(API) 
 3. Sql-Server
 
-### 1.1 Authentication
+### 2.1 Authentication
 For Authentication we implemented JWT based authentication in our project. It is a self-managed authentication system.
-### 1.2 Stock Data
+### 2.2 Stock Data
 The project used https://finnhub.io/ API to pull stock data into the project. 
-### 1.3 User Data
+### 2.3 User Data
 For persistent data storage, We have Used ASP.net API end points, hosted through Azure which stored the data in Sql Server for user portfolio data. Below is the UML Diagram:
 
 ![Stock_Schema](/./public/StockUml.png)
-### 1.4 UI
+### 2.4 UI
 For the UI, React Native has been used. The UI is user-friendly for the end users. 
 
 <a name="3"></a>
 # 3. Installation
 To run the project the following steps are required:
-### 2.1 Clone
+### 3.1 Clone
 This repo should be cloned to your local machine using https://github.com/tomkf/mobile_project.git
-### 2.2 Installation (Client)
+### 3.2 Installation (Client)
     cd to the root folder of clinet 
     npm install
-### 2.3 Installation (Server)
+### 3.3 Installation (Server)
 ##### Through the Package Manager Console, execute the following commands:
     Drop-Database
     Remove-Migration
