@@ -2,8 +2,8 @@
 1.[Technologies](#1)
 2.[Installation](#2)
 3.[Running The Application](#3)
-3.[Functionalities](#4)
-4.[Team](#5)
+4.[Functionalities](#4)
+5.[Team](#5)
 
 <a name="1"></a>
 # 1. Technologies:
@@ -55,7 +55,7 @@ This repo should be cloned to your local machine using https://github.com/tomkf/
 
 <a name="5"></a>
 # 5. Team
-1. Tai Thien
-2. Thomas
-3. Peter
-4. Ibrahim
+1. <a href="https://github.com/dotai2012" target="_blank"> Tai Thien </a>
+2. <a href="https://github.com/tomkf" target="_blank"> Thomas </a>
+3. <a href="https://github.com/choipeter11" target="_blank"> Peter </a>
+4. <a href="https://github.com/Ibrahimshahristani" target="_blank"> Ibrahim </a> 
