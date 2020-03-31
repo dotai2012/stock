@@ -41,6 +41,7 @@ This repo should be cloned to your local machine using https://github.com/tomkf/
     cd to the root folder of clinet 
     npm install
 ### 2.3 Installation (Server)
+##### Through the Package Manager Console, execute the following commands:
     Drop-Database
     Remove-Migration
     Add-Migration InitialCreate
