@@ -1,8 +1,9 @@
 # Mobile Project
 1.[Technologies](#1)
 2.[Installation](#2)
-3.[Functionalities](#3)
-4.[Team](#4)
+3.[Running The Application](#3)
+3.[Functionalities](#4)
+4.[Team](#5)
 
 <a name="1"></a>
 # 1. Technologies:
@@ -16,9 +17,9 @@ For Authentication we implemented JWT based authentication in our project. It is
 ### 1.2 Stock Data
 The project used https://finnhub.io/ API to pull stock data into the project. 
 ### 1.3 User Data
-For persistent data storage, We have Used ASP.net API end points which stored the data in Sql Server for user portfolio data. Below is the UML Diagram:
+For persistent data storage, We have Used ASP.net API end points, hosted through Azure which stored the data in Sql Server for user portfolio data. Below is the UML Diagram:
 
-![Stock_Schema](/StockUml.png)
+![Stock_Schema](/./public/StockUml.png)
 ### 1.4 UI
 For the UI, React Native has been used. The UI is user-friendly for the end users. 
 <a name="2"></a>
@@ -33,11 +34,16 @@ This repo should be cloned to your local machine using https://github.com/tomkf/
     Drop-Database
     Remove-Migration
     Add-Migration InitialCreate
-    update-database
-The Server and Client should be running at the same time. 
+    Update-Database
 
 <a name="3"></a>
-# 3. Functionalities
+# 3. Running the Application
+1. After installing the dependencies, from the client folder run the command "npm start" 
+2. This will open the Expo client in your browser, from here ensure "lan" is selected, and copy paste this address to your clipboard.
+3. Run an emulator of your choice (we choose to use BlueStacks for development), and copy paste the lan address to it. 
+
+<a name="4"></a>
+# 4. Functionalities
 1.	Register for an account
 2.	Login/Logout
 3.	Search stocks by symbol or company name
@@ -47,11 +53,9 @@ The Server and Client should be running at the same time.
     - List of current positions
     - Simple line chart of portfolio 
 
-<a name="4"></a>
-# 4. Team
+<a name="5"></a>
+# 5. Team
 1. Tai Thien
 2. Thomas
 3. Peter
 4. Ibrahim
-
-
