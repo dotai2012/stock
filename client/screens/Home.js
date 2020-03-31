@@ -64,7 +64,7 @@ const Home = () => {
   ));
 
   const renderPerformance = () => {
-    const listDates = portfolios.map(({ date }) => moment(date).format('MM-DD-YYYY'));
+    const listDates = portfolios.map(({ date }) => moment(new Date(date)).format('MM-DD-YYYY'));
     const listPerformances = portfolios.map((position) => position.total);
 
     return (
@@ -108,7 +108,7 @@ const Home = () => {
     );
   };
 
-  const renderStocks = () => stocks.map(({ id, symbol, balance }) => (
+  const renderStocks = () => (stocks.length > 0 ? stocks.map(({ id, symbol, balance }) => (
     <ListItem
       key={id}
       title={symbol}
@@ -120,15 +120,15 @@ const Home = () => {
         />
       )}
     />
-  ));
+  )) : <Text>You have not bought anything yet</Text>);
 
-  const renderPositions = () => positions.map(({ symbol, price, quantity }) => (
+  const renderPositions = () => (positions.length > 0 ? positions.map(({ symbol, price, quantity }) => (
     <ListItem
       key={symbol}
       title={symbol}
       subtitle={`Bought at: $${price} - Amount: ${quantity}`}
     />
-  ));
+  )) : <Text>There is no open position</Text>);
 
   return (
     <View>
